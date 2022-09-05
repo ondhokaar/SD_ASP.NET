@@ -7,7 +7,7 @@ using System.Web.Security;
 
 namespace weblogbook.Views.Door
 {
-    [AllowAnonymous]
+
     public class DoorController : Controller
     {
         //Models.WeblogDBEntities1 db = new Models.WeblogDBEntities1();
@@ -55,10 +55,11 @@ namespace weblogbook.Views.Door
         }
         // GET: Door
         [HttpGet]
-
+        [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
         public ActionResult Index()
-        {
-            return View();
+        { 
+            if (Session["user"] == null) return View();
+            return RedirectToAction("Feed", "Feed");
         }
         [HttpPost]
         public ActionResult SignUp(Models.User newuser)

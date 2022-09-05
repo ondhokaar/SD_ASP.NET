@@ -14,8 +14,11 @@
 
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
 </head>
-<body>
+
+
+<body >
 
 
 
@@ -40,15 +43,15 @@
                             {
                                 ViewBag.info = "";
                             }
-                            else 
+                            else
                             {
                                 ViewBag.info = TempData["info"].ToString();
                             }
 
-                            
+
 
                         }
-                        <input class="checkbox" type="checkbox" id="reg-log" name="reg-log" @ViewBag.val/>
+                        <input class="checkbox" type="checkbox" id="reg-log" name="reg-log" @ViewBag.val />
                         <label for="reg-log"></label>
 
 

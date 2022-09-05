@@ -3,39 +3,89 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
 </head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" title="more options">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+<body style="min-height:100vh">
+
+ 
+
+
+
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top mt-0" style="margin-top:0px; padding-top:0px">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">WebLogBook</a>
+
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+
+                    <div class="collapse navbar-collapse" id="navbarColor01">
+                        <ul class="navbar-nav" style="margin-left:0px;">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#">
+                                    Feed
+                                    <span class="visually-hidden">(current)</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">People</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">New Post</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Subscription</a>
+                            </li>
+
+                        </ul>
+
+
+
+
+                        <ul class="nav navbar-nav" style="margin-left: auto;">
+
+
+                            @if (Session["user"] != null)
+                            {
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">@Session["user"].ToString()</a>
+                                </li>
+
+                                <li class="nav-item"><a href="/Feed/Logout" class="nav-link">Logout</a></li>
+                            }
+
+
+
+
+                        </ul>
+
+
+
+
+
+
+
+
+                    </div>
+                </div>
+            </nav>
+
+
+
+            <div class="container body-content">
+                @RenderBody()
+                <hr />
+                <footer>
+                    <p>&copy; @DateTime.Now - Weblogbook</p>
+                </footer>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
-        </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
+
+
+
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
