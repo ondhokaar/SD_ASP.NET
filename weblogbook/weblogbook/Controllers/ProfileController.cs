@@ -6,10 +6,10 @@ using System.Web.Mvc;
 
 namespace weblogbook.Controllers
 {
-    public class NewPostController : Controller
+    public class ProfileController : Controller
     {
-        // GET: NewPost
-        public ActionResult NewPost()
+        // GET: Profile
+        public ActionResult Index()
         {
             return View();
         }
