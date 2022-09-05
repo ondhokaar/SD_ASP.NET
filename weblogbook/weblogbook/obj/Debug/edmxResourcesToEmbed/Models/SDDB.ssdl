@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Articles">
+    <Key>
+      <PropertyRef Name="sl" />
+      <PropertyRef Name="writer_sl" />
+    </Key>
+    <Property Name="sl" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="articleID" Type="varchar" MaxLength="510" StoreGeneratedPattern="Computed" />
+    <Property Name="createdAt" Type="datetime" />
+    <Property Name="writer_email" Type="varchar" MaxLength="255" />
+    <Property Name="writer_sl" Type="int" Nullable="false" />
+    <Property Name="title" Type="text" />
+    <Property Name="articleBody" Type="text" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'SD.dbo.Follower_Map' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Follower_Map">
+    <Key>
+      <PropertyRef Name="followedBy_sl" />
+      <PropertyRef Name="followed_sl" />
+      <PropertyRef Name="followedBy_email" />
+      <PropertyRef Name="followed_email" />
+    </Key>
+    <Property Name="followedBy_sl" Type="int" Nullable="false" />
+    <Property Name="followed_sl" Type="int" Nullable="false" />
+    <Property Name="followedBy_email" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="followed_email" Type="varchar" MaxLength="255" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'SD.dbo.FollowerMap' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="FollowerMap">
+          <Property Name="followedBy_sl" Type="int" />
+          <Property Name="followed_sl" Type="int" />
+          <Property Name="followedBy_email" Type="varchar" MaxLength="255" />
+          <Property Name="followed_email" Type="varchar" MaxLength="255" />
+        </EntityType>-->
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="sl" />
+      <PropertyRef Name="email" />
+    </Key>
+    <Property Name="sl" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="username" Type="varchar" MaxLength="255" />
+    <Property Name="fullname" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="email" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="pass" Type="varchar" MaxLength="255" Nullable="false" />
+  </EntityType>
+  <Association Name="fk_articles">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Articles" Type="Self.Articles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="email" />
+        <PropertyRef Name="sl" />
+      </Principal>
+      <Dependent Role="Articles">
+        <PropertyRef Name="writer_email" />
+        <PropertyRef Name="writer_sl" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <!--Errors Found During Generation:
+error 6004: The table 'SD.dbo.FollowerMap' is referenced by a relationship, but cannot be found.
+        <Association Name="fk_f" />-->
+  <Association Name="fk_f2">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Follower_Map" Type="Self.Follower_Map" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="email" />
+        <PropertyRef Name="sl" />
+      </Principal>
+      <Dependent Role="Follower_Map">
+        <PropertyRef Name="followed_email" />
+        <PropertyRef Name="followed_sl" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <!--Errors Found During Generation:
+error 6004: The table 'SD.dbo.FollowerMap' is referenced by a relationship, but cannot be found.
+        <Association Name="fk_fby" />-->
+  <Association Name="fk_fby2">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Follower_Map" Type="Self.Follower_Map" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="email" />
+        <PropertyRef Name="sl" />
+      </Principal>
+      <Dependent Role="Follower_Map">
+        <PropertyRef Name="followedBy_email" />
+        <PropertyRef Name="followedBy_sl" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SDModelStoreContainer">
+    <EntitySet Name="Articles" EntityType="Self.Articles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Follower_Map" EntityType="Self.Follower_Map" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Follower_Map].[followedBy_sl] AS [followedBy_sl], 
+    [Follower_Map].[followed_sl] AS [followed_sl], 
+    [Follower_Map].[followedBy_email] AS [followedBy_email], 
+    [Follower_Map].[followed_email] AS [followed_email]
+    FROM [dbo].[Follower_Map] AS [Follower_Map]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="fk_articles" Association="Self.fk_articles">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Articles" EntitySet="Articles" />
+    </AssociationSet>
+    <AssociationSet Name="fk_f2" Association="Self.fk_f2">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Follower_Map" EntitySet="Follower_Map" />
+    </AssociationSet>
+    <AssociationSet Name="fk_fby2" Association="Self.fk_fby2">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Follower_Map" EntitySet="Follower_Map" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

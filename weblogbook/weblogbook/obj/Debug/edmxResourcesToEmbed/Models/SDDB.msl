@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SDModelStoreContainer" CdmEntityContainer="SDEntities">
+    <EntitySetMapping Name="Articles">
+      <EntityTypeMapping TypeName="SDModel.Article">
+        <MappingFragment StoreEntitySet="Articles">
+          <ScalarProperty Name="sl" ColumnName="sl" />
+          <ScalarProperty Name="articleID" ColumnName="articleID" />
+          <ScalarProperty Name="createdAt" ColumnName="createdAt" />
+          <ScalarProperty Name="writer_email" ColumnName="writer_email" />
+          <ScalarProperty Name="writer_sl" ColumnName="writer_sl" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="articleBody" ColumnName="articleBody" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="SDModel.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="sl" ColumnName="sl" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="fullname" ColumnName="fullname" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="pass" ColumnName="pass" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="Follower_Map" TypeName="SDModel.Follower_Map" StoreEntitySet="Follower_Map">
+      <EndProperty Name="Users">
+        <ScalarProperty Name="sl" ColumnName="followed_sl" />
+        <ScalarProperty Name="email" ColumnName="followed_email" />
+      </EndProperty>
+      <EndProperty Name="Users1">
+        <ScalarProperty Name="sl" ColumnName="followedBy_sl" />
+        <ScalarProperty Name="email" ColumnName="followedBy_email" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>
