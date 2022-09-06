@@ -4,6 +4,7 @@
     <EntitySetMapping Name="Articles">
       <EntityTypeMapping TypeName="SDModel.Article">
         <MappingFragment StoreEntitySet="Articles">
+          <ScalarProperty Name="image" ColumnName="image" />
           <ScalarProperty Name="sl" ColumnName="sl" />
           <ScalarProperty Name="articleID" ColumnName="articleID" />
           <ScalarProperty Name="createdAt" ColumnName="createdAt" />
@@ -17,6 +18,7 @@
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="SDModel.User">
         <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="userrole" ColumnName="userrole" />
           <ScalarProperty Name="sl" ColumnName="sl" />
           <ScalarProperty Name="username" ColumnName="username" />
           <ScalarProperty Name="fullname" ColumnName="fullname" />
@@ -25,15 +27,28 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="Follower_Map" TypeName="SDModel.Follower_Map" StoreEntitySet="Follower_Map">
-      <EndProperty Name="Users">
-        <ScalarProperty Name="sl" ColumnName="followed_sl" />
-        <ScalarProperty Name="email" ColumnName="followed_email" />
-      </EndProperty>
-      <EndProperty Name="Users1">
-        <ScalarProperty Name="sl" ColumnName="followedBy_sl" />
-        <ScalarProperty Name="email" ColumnName="followedBy_email" />
-      </EndProperty>
-    </AssociationSetMapping>
+    <EntitySetMapping Name="Fmaps">
+      <EntityTypeMapping TypeName="SDModel.Fmap">
+        <MappingFragment StoreEntitySet="Fmap">
+          <ScalarProperty Name="followed_email" ColumnName="followed_email" />
+          <ScalarProperty Name="followedBy_email" ColumnName="followedBy_email" />
+          <ScalarProperty Name="followed_sl" ColumnName="followed_sl" />
+          <ScalarProperty Name="followedBy_sl" ColumnName="followedBy_sl" />
+          <ScalarProperty Name="fid" ColumnName="fid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="subscriptions">
+      <EntityTypeMapping TypeName="SDModel.subscription">
+        <MappingFragment StoreEntitySet="subscriptions">
+          <ScalarProperty Name="postby" ColumnName="postby" />
+          <ScalarProperty Name="price" ColumnName="price" />
+          <ScalarProperty Name="validity_months" ColumnName="validity_months" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="subID" ColumnName="subID" />
+          <ScalarProperty Name="sl" ColumnName="sl" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

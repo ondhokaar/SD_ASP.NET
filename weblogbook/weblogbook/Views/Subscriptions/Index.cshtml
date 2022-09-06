@@ -8,19 +8,52 @@
             <th scope="col"></th>
         </tr>
     </thead>
-    <tbody>
-        <tr class="table-dark">
-            <th scope="row">Dark</th>
-            <td>Column content</td>
-            <td>Column content</td>
-            <td><button formmethod="post" formaction="~/Subscription/Buy">Buy Now</button></td>
-        </tr>
+    @{ 
+        weblogbook.Models.SDEntities sddb = new weblogbook.Models.SDEntities();
 
-        <tr class="table-dark">
-            <th scope="row">Dark</th>
-            <td>Column content</td>
-            <td>Column content</td>
-            <td><button formmethod="post" formaction="~/Subscription/Buy">Buy Now</button></td>
-        </tr>
-    </tbody>
+    }
+    <tbody>
+        @foreach (var i in sddb.subscriptions)
+        {
+            <tr class="table-dark">
+                <th scope="row">@i.name</th>
+                <td>@i.validity_months</td>
+                <td>@i.price</td>
+                <td><button formmethod="post" formaction="~/Subscription/Buy">Buy Now</button></td>
+            </tr>
+        }
+
+        </tbody>
+
+
+
 </table>
+
+@{ 
+    String usr = (String) Session["user"];
+
+    weblogbook.Models.User me = sddb.Users.Where(x => x.username.Equals(usr)).First();
+    
+}
+@if(me.userrole.Equals("admin")) {
+    <hr />
+
+
+
+    <form action="~/Subscriptions/AddNew" method="post">
+        <div class="form-group">
+            <label class="col-form-label mt-4" for="inputName">Name</label>
+            <input type="text" name="name" class="form-control" placeholder="Name of the package" id="inputName">
+        </div>
+        <div class="form-group">
+            <label class="col-form-label mt-4" for="inputValidity">Validity</label>
+            <input type="number" name="validity_months" class="form-control" placeholder="Validity Months of the package" id="inputValidity">
+        </div>
+        <div class="form-group">
+            <label class="col-form-label mt-4" for="inputPrice">Price</label>
+            <input type="number" name="price" class="form-control" placeholder="price of the package" id="inputPrice">
+        </div>
+        <button>Add New Subscription Policy</button>
+    </form>
+
+}

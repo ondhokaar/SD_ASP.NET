@@ -11,6 +11,7 @@ namespace weblogbook.Controllers
         // GET: Profile
         public ActionResult Index()
         {
+            if (Session["user"] == null) return RedirectToAction("Index", "Door");
             return View();
         }
     }

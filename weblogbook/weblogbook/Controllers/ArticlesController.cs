@@ -6,39 +6,52 @@ using System.Web.Mvc;
 
 namespace weblogbook.Controllers
 {
+    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class ArticlesController : Controller
     {
         // GET: Articles
         public ActionResult Index()
         {
+            if (Session["user"] == null) return RedirectToAction("Index", "Door");
             return View();
         }
 
         // GET: Articles/Details/5
         public ActionResult Details(int id)
-        {
+        {if (Session["user"] == null)
+                return RedirectToAction("Index", "Door");
+            
             return View();
         }
 
         // GET: Articles/Create
         public ActionResult Create()
         {
+            if (Session["user"] == null) return RedirectToAction("Index", "Door");
             return RedirectToAction("Feed", "Feed");
         }
 
         // POST: Articles/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create([Bind(Include = "title, articleBody, image")] Models.Article article)
         {
 
             // TODO: Add insert logic here
-
+            String uid = (String)Session["user"];
+            Models.SDEntities sddb = new Models.SDEntities();
+            Models.User thisuser = sddb.Users.Where(usr => usr.username.Equals(uid)).First();
+            article.writer_email = thisuser.email;
+            article.writer_sl = thisuser.sl;
+            article.createdAt = DateTime.Now;
+            sddb.Articles.Add(article);
             try
             {
+                sddb.SaveChanges();
                 return RedirectToAction("Feed", "Feed");
             }
             catch(Exception)
             {
+                if (Session["user"] == null) return RedirectToAction("Index", "Door");
                 return View("Index");
             }
         }

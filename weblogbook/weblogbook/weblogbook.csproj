@@ -180,6 +180,9 @@
     <Compile Include="Models\Article.cs">
       <DependentUpon>SDDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Fmap.cs">
+      <DependentUpon>SDDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\SDDB.Context.cs">
@@ -196,6 +199,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SDDB.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\subscription.cs">
+      <DependentUpon>SDDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">
       <DependentUpon>SDDB.tt</DependentUpon>

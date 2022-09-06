@@ -2,12 +2,86 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+
 }
 
 <h2>Profile</h2>
 
 
-<div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
-    <div class="card p-4"> <div class=" image d-flex flex-column justify-content-center align-items-center"> <button class="btn btn-secondary"> <img src="https://i.imgur.com/wvxPV9S.png" height="100" width="100" /></button> <span class="name mt-3">Eleanor Pena</span> <span class="idd">testuser</span> <div class="d-flex flex-row justify-content-center align-items-center gap-2"> <span class="idd1">Oxc4c16a645_b21a</span> <span><i class="fa fa-copy"></i></span> </div> <div class="d-flex flex-row justify-content-center align-items-center mt-3"> <span class="number">1069 <span class="follow">Followers</span></span> </div> <div class=" d-flex mt-2"> <button class="btn1 btn-dark">Edit Profile</button> </div> <div class="text mt-3"> <span>Eleanor Pena is a creator of minimalistic x bold graphics and digital artwork.<br><br> Artist/ Creative Director by Day #NFT mintin with FND night. </span> </div> <div class="gap-3 mt-3 icons d-flex flex-row justify-content-center align-items-center"> <span><i class="fa fa-twitter"></i></span> <span><i class="fa fa-facebook-f"></i></span> <span><i class="fa fa-instagram"></i></span> <span><i class="fa fa-linkedin"></i></span> </div> <div class=" px-2 rounded mt-4 date "> <span class="join">Joined May,2021</span> </div> </div> </div>
+<!------ Include the above in your HEAD tag ---------->
+@{            String username= (String) Session["user"];
+    weblogbook.Models.SDEntities sddb = new weblogbook.Models.SDEntities();
+    weblogbook.Models.User user = sddb.Users.Where(usr => usr.username.Equals(username)).First();
+
+    int totalPost, totalFollower, totalFollowing;
+
+    totalPost = sddb.Articles.Where(me => me.writer_email.Equals(user.email)).Count();
+    totalFollower = 0;
+
+}
+<div class="container">
+    <div class="row">
+        <h1>@user.fullname</h1>
+        <p>@user.email</p>
+        <!-- code start -->
+        <div class="container">
+
+            <div>
+
+
+
+
+                <div class="container-fluid bg-dark text-white">
+                    <ul class="twPc-Arrange">
+                        <li class="twPc-ArrangeSizeFit">
+                            <span>Posts : </span> <span>@totalPost</span>
+                        </li>
+                        <li class="twPc-ArrangeSizeFit">
+                            <span>Follower : </span> <span>@totalFollower</span>
+                        </li>
+                        <li class="twPc-ArrangeSizeFit">
+                            <span>Following : </span> <span>@totalFollower</span>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- code end -->
+
+    </div>
+
+    <hr />
+
+    <h2>My Posts : </h2>
+    <div class="album py-5 bg-transparent">
+        <div class="container">
+
+            <div class="row">
+                @foreach (var i in sddb.Articles.Where(mine=>mine.writer_email.Equals(user.email)))
+                {
+
+                    <div class="col-md-4">
+                        <div class="card mb-4 box-shadow bg-transparent text-white">
+                            <img class="card-img-top" onerror="this.src = '';" display: block;" src="@i.image" data-holder-rendered="true">
+                            <div class="card-body">
+                                <h4 class="card-title">@i.title</h4>
+                                <p class="card-text">@i.articleBody</p>
+                                <div class="d-flex justify-content-between align-items-center">
+
+                                    @{TimeSpan ts = ((DateTime.Now - (DateTime)i.createdAt));
+                                    }
+                                    <small class="text-muted"> @string.Format("{0:%d}d {0:%h}h {0:%m}min {0:%s}sec", ts)</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+
+            </div>
+        </div>
+    </div>
 </div>
 

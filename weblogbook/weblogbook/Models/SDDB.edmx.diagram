@@ -8,7 +8,8 @@
         <EntityTypeShape EntityType="SDModel.Article" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="SDModel.User" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
         <AssociationConnector Association="SDModel.fk_articles" ManuallyRouted="false" />
-        <AssociationConnector Association="SDModel.Follower_Map" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SDModel.Fmap" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="SDModel.subscription" Width="1.5" PointX="3.375" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

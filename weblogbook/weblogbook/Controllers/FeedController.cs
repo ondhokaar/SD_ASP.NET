@@ -14,6 +14,16 @@ namespace weblogbook.Controllers
        // Models.WeblogDBEntities1 db = new Models.WeblogDBEntities1();
         Models.SDEntities sddb = new Models.SDEntities();
 
+        [HttpPost]
+        public ActionResult PostView()
+        {
+            if (Session["user"] == null) return RedirectToAction("Index", "Door");
+
+            return RedirectToAction("Index", "Articles");
+      
+            
+        }
+
         public ActionResult Feed()
         {
 

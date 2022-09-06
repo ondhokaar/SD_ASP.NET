@@ -11,23 +11,24 @@
 </section>
 <!--Section: Post data-mdb-->
 <!--Section: Text-->
+@{  
+    
+    weblogbook.Models.SDEntities sddb = new weblogbook.Models.SDEntities();
+    String id = ViewBag.data;
+    weblogbook.Models.Article article = sddb.Articles.Where(art => art.articleID.Equals(id)).First();
+    
+    
+    }
 <section>
-    <h2>This is title</h2>
+    <h2>@article.title</h2>
     <p>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Optio sapiente molestias
-        consectetur. Fuga nulla officia error placeat veniam, officiis rerum laboriosam
-        ullam molestiae magni velit laborum itaque minima doloribus eligendi! Lorem ipsum,
-        dolor sit amet consectetur adipisicing elit. Optio sapiente molestias consectetur.
-        Fuga nulla officia error placeat veniam, officiis rerum laboriosam ullam molestiae
-        magni velit laborum itaque minima doloribus eligendi!
+        @article.articleBody
     </p>
 
     <p><strong>Optio sapiente molestias consectetur?</strong></p>
 
     <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum architecto ex ab aut
-        tempora officia libero praesentium, sint id magnam eius natus unde blanditiis. Autem
-        adipisci totam sit consequuntur eligendi.
+        
     </p>
 
     <p class="note note-light">

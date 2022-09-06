@@ -13,6 +13,7 @@
     <Property Name="title" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <Property Name="articleBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="User" Relationship="Self.fk_articles" FromRole="Articles" ToRole="Users" />
+    <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="User">
     <Key>
@@ -25,8 +26,7 @@
     <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="pass" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
     <NavigationProperty Name="Articles" Relationship="Self.fk_articles" FromRole="Users" ToRole="Articles" />
-    <NavigationProperty Name="Users1" Relationship="Self.Follower_Map" FromRole="Users" ToRole="Users1" />
-    <NavigationProperty Name="Users" Relationship="Self.Follower_Map" FromRole="Users1" ToRole="Users" />
+    <Property Name="userrole" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
   </EntityType>
   <Association Name="fk_articles">
     <End Role="Users" Type="Self.User" Multiplicity="0..1" />
@@ -42,10 +42,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="Follower_Map">
-    <End Role="Users" Type="Self.User" Multiplicity="*" />
-    <End Role="Users1" Type="Self.User" Multiplicity="*" />
-  </Association>
   <EntityContainer Name="SDEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Articles" EntityType="Self.Article" />
     <EntitySet Name="Users" EntityType="Self.User" />
@@ -53,9 +49,29 @@
       <End Role="Users" EntitySet="Users" />
       <End Role="Articles" EntitySet="Articles" />
     </AssociationSet>
-    <AssociationSet Name="Follower_Map" Association="Self.Follower_Map">
-      <End Role="Users" EntitySet="Users" />
-      <End Role="Users1" EntitySet="Users" />
-    </AssociationSet>
+    <EntitySet Name="Fmaps" EntityType="SDModel.Fmap" />
+    <EntitySet Name="subscriptions" EntityType="SDModel.subscription" />
   </EntityContainer>
+  <EntityType Name="Fmap">
+    <Key>
+      <PropertyRef Name="fid" />
+    </Key>
+    <Property Name="fid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="followedBy_sl" Type="Int32" Nullable="false" />
+    <Property Name="followed_sl" Type="Int32" Nullable="false" />
+    <Property Name="followedBy_email" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="followed_email" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="subscription">
+    <Key>
+      <PropertyRef Name="sl" />
+      <PropertyRef Name="postby" />
+    </Key>
+    <Property Name="sl" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="subID" Type="String" MaxLength="510" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="validity_months" Type="Int32" Nullable="false" />
+    <Property Name="price" Type="Decimal" Nullable="false" Precision="20" Scale="4" />
+    <Property Name="postby" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
 </Schema>

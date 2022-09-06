@@ -18,8 +18,6 @@ namespace weblogbook.Models
         public User()
         {
             this.Articles = new HashSet<Article>();
-            this.Users1 = new HashSet<User>();
-            this.Users = new HashSet<User>();
         }
     
         public int sl { get; set; }
@@ -27,12 +25,9 @@ namespace weblogbook.Models
         public string fullname { get; set; }
         public string email { get; set; }
         public string pass { get; set; }
+        public string userrole { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Article> Articles { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
     }
 }

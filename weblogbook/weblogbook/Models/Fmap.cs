@@ -12,17 +12,12 @@ namespace weblogbook.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Article
+    public partial class Fmap
     {
-        public int sl { get; set; }
-        public string articleID { get; set; }
-        public Nullable<System.DateTime> createdAt { get; set; }
-        public string writer_email { get; set; }
-        public int writer_sl { get; set; }
-        public string title { get; set; }
-        public string articleBody { get; set; }
-        public string image { get; set; }
-    
-        public virtual User User { get; set; }
+        public int fid { get; set; }
+        public int followedBy_sl { get; set; }
+        public int followed_sl { get; set; }
+        public string followedBy_email { get; set; }
+        public string followed_email { get; set; }
     }
 }

@@ -12,17 +12,13 @@ namespace weblogbook.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Article
+    public partial class subscription
     {
         public int sl { get; set; }
-        public string articleID { get; set; }
-        public Nullable<System.DateTime> createdAt { get; set; }
-        public string writer_email { get; set; }
-        public int writer_sl { get; set; }
-        public string title { get; set; }
-        public string articleBody { get; set; }
-        public string image { get; set; }
-    
-        public virtual User User { get; set; }
+        public string subID { get; set; }
+        public string name { get; set; }
+        public int validity_months { get; set; }
+        public decimal price { get; set; }
+        public string postby { get; set; }
     }
 }

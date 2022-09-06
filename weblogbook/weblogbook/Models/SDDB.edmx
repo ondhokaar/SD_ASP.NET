@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Articles">
           <Key>
             <PropertyRef Name="sl" />
@@ -17,29 +17,30 @@
           <Property Name="writer_sl" Type="int" Nullable="false" />
           <Property Name="title" Type="text" />
           <Property Name="articleBody" Type="text" />
+          <Property Name="image" Type="text" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SD.dbo.Follower_Map' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="Follower_Map">
+        <EntityType Name="Fmap">
           <Key>
-            <PropertyRef Name="followedBy_sl" />
-            <PropertyRef Name="followed_sl" />
-            <PropertyRef Name="followedBy_email" />
-            <PropertyRef Name="followed_email" />
+            <PropertyRef Name="fid" />
           </Key>
+          <Property Name="fid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="followedBy_sl" Type="int" Nullable="false" />
           <Property Name="followed_sl" Type="int" Nullable="false" />
           <Property Name="followedBy_email" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="followed_email" Type="varchar" MaxLength="255" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'SD.dbo.FollowerMap' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="FollowerMap">
-          <Property Name="followedBy_sl" Type="int" />
-          <Property Name="followed_sl" Type="int" />
-          <Property Name="followedBy_email" Type="varchar" MaxLength="255" />
-          <Property Name="followed_email" Type="varchar" MaxLength="255" />
-        </EntityType>-->
+        <EntityType Name="subscriptions">
+          <Key>
+            <PropertyRef Name="sl" />
+            <PropertyRef Name="postby" />
+          </Key>
+          <Property Name="sl" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="subID" Type="varchar" MaxLength="510" StoreGeneratedPattern="Computed" />
+          <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="validity_months" Type="int" Nullable="false" />
+          <Property Name="price" Type="decimal" Precision="20" Scale="4" Nullable="false" />
+          <Property Name="postby" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="sl" />
@@ -50,7 +51,11 @@ warning 6013: The table/view 'SD.dbo.FollowerMap' does not have a primary key de
           <Property Name="fullname" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="email" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="pass" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="userrole" Type="varchar" MaxLength="255" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6035: The relationship 'FK__subscript__postb__2739D489' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK__subscript__postb__2739D489" />-->
         <Association Name="fk_articles">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="Articles" Type="Self.Articles" Multiplicity="*" />
@@ -65,66 +70,17 @@ warning 6013: The table/view 'SD.dbo.FollowerMap' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <!--Errors Found During Generation:
-error 6004: The table 'SD.dbo.FollowerMap' is referenced by a relationship, but cannot be found.
-        <Association Name="fk_f" />-->
-        <Association Name="fk_f2">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Follower_Map" Type="Self.Follower_Map" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="email" />
-              <PropertyRef Name="sl" />
-            </Principal>
-            <Dependent Role="Follower_Map">
-              <PropertyRef Name="followed_email" />
-              <PropertyRef Name="followed_sl" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <!--Errors Found During Generation:
-error 6004: The table 'SD.dbo.FollowerMap' is referenced by a relationship, but cannot be found.
-        <Association Name="fk_fby" />-->
-        <Association Name="fk_fby2">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Follower_Map" Type="Self.Follower_Map" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="email" />
-              <PropertyRef Name="sl" />
-            </Principal>
-            <Dependent Role="Follower_Map">
-              <PropertyRef Name="followedBy_email" />
-              <PropertyRef Name="followedBy_sl" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="SDModelStoreContainer">
           <EntitySet Name="Articles" EntityType="Self.Articles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Fmap" EntityType="Self.Fmap" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="subscriptions" EntityType="Self.subscriptions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Follower_Map" EntityType="Self.Follower_Map" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Follower_Map].[followedBy_sl] AS [followedBy_sl], 
-    [Follower_Map].[followed_sl] AS [followed_sl], 
-    [Follower_Map].[followedBy_email] AS [followedBy_email], 
-    [Follower_Map].[followed_email] AS [followed_email]
-    FROM [dbo].[Follower_Map] AS [Follower_Map]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="fk_articles" Association="Self.fk_articles">
             <End Role="Users" EntitySet="Users" />
             <End Role="Articles" EntitySet="Articles" />
           </AssociationSet>
-          <AssociationSet Name="fk_f2" Association="Self.fk_f2">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Follower_Map" EntitySet="Follower_Map" />
-          </AssociationSet>
-          <AssociationSet Name="fk_fby2" Association="Self.fk_fby2">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Follower_Map" EntitySet="Follower_Map" />
-          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -141,6 +97,7 @@ error 6004: The table 'SD.dbo.FollowerMap' is referenced by a relationship, but 
           <Property Name="title" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="articleBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="User" Relationship="Self.fk_articles" FromRole="Articles" ToRole="Users" />
+          <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -153,9 +110,8 @@ error 6004: The table 'SD.dbo.FollowerMap' is referenced by a relationship, but 
           <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="pass" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Articles" Relationship="Self.fk_articles" FromRole="Users" ToRole="Articles" />
-          <NavigationProperty Name="Users1" Relationship="Self.Follower_Map" FromRole="Users" ToRole="Users1" />
-          <NavigationProperty Name="Users" Relationship="Self.Follower_Map" FromRole="Users1" ToRole="Users" />
-        </EntityType>
+          <Property Name="userrole" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          </EntityType>
         <Association Name="fk_articles">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="Articles" Type="Self.Article" Multiplicity="*" />
@@ -170,10 +126,6 @@ error 6004: The table 'SD.dbo.FollowerMap' is referenced by a relationship, but 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Follower_Map">
-          <End Role="Users" Type="Self.User" Multiplicity="*" />
-          <End Role="Users1" Type="Self.User" Multiplicity="*" />
-        </Association>
         <EntityContainer Name="SDEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Articles" EntityType="Self.Article" />
           <EntitySet Name="Users" EntityType="Self.User" />
@@ -181,11 +133,31 @@ error 6004: The table 'SD.dbo.FollowerMap' is referenced by a relationship, but 
             <End Role="Users" EntitySet="Users" />
             <End Role="Articles" EntitySet="Articles" />
           </AssociationSet>
-          <AssociationSet Name="Follower_Map" Association="Self.Follower_Map">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Users1" EntitySet="Users" />
-          </AssociationSet>
+          <EntitySet Name="Fmaps" EntityType="SDModel.Fmap" />
+          <EntitySet Name="subscriptions" EntityType="SDModel.subscription" />
         </EntityContainer>
+        <EntityType Name="Fmap">
+          <Key>
+            <PropertyRef Name="fid" />
+          </Key>
+          <Property Name="fid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="followedBy_sl" Type="Int32" Nullable="false" />
+          <Property Name="followed_sl" Type="Int32" Nullable="false" />
+          <Property Name="followedBy_email" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="followed_email" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="subscription">
+          <Key>
+            <PropertyRef Name="sl" />
+            <PropertyRef Name="postby" />
+          </Key>
+          <Property Name="sl" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="subID" Type="String" MaxLength="510" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="validity_months" Type="Int32" Nullable="false" />
+          <Property Name="price" Type="Decimal" Nullable="false" Precision="20" Scale="4" />
+          <Property Name="postby" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -195,6 +167,7 @@ error 6004: The table 'SD.dbo.FollowerMap' is referenced by a relationship, but 
           <EntitySetMapping Name="Articles">
             <EntityTypeMapping TypeName="SDModel.Article">
               <MappingFragment StoreEntitySet="Articles">
+                <ScalarProperty Name="image" ColumnName="image" />
                 <ScalarProperty Name="sl" ColumnName="sl" />
                 <ScalarProperty Name="articleID" ColumnName="articleID" />
                 <ScalarProperty Name="createdAt" ColumnName="createdAt" />
@@ -208,6 +181,7 @@ error 6004: The table 'SD.dbo.FollowerMap' is referenced by a relationship, but 
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="SDModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="userrole" ColumnName="userrole" />
                 <ScalarProperty Name="sl" ColumnName="sl" />
                 <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="fullname" ColumnName="fullname" />
@@ -216,16 +190,29 @@ error 6004: The table 'SD.dbo.FollowerMap' is referenced by a relationship, but 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="Follower_Map" TypeName="SDModel.Follower_Map" StoreEntitySet="Follower_Map">
-            <EndProperty Name="Users">
-              <ScalarProperty Name="sl" ColumnName="followed_sl" />
-              <ScalarProperty Name="email" ColumnName="followed_email" />
-            </EndProperty>
-            <EndProperty Name="Users1">
-              <ScalarProperty Name="sl" ColumnName="followedBy_sl" />
-              <ScalarProperty Name="email" ColumnName="followedBy_email" />
-            </EndProperty>
-          </AssociationSetMapping>
+          <EntitySetMapping Name="Fmaps">
+            <EntityTypeMapping TypeName="SDModel.Fmap">
+              <MappingFragment StoreEntitySet="Fmap">
+                <ScalarProperty Name="followed_email" ColumnName="followed_email" />
+                <ScalarProperty Name="followedBy_email" ColumnName="followedBy_email" />
+                <ScalarProperty Name="followed_sl" ColumnName="followed_sl" />
+                <ScalarProperty Name="followedBy_sl" ColumnName="followedBy_sl" />
+                <ScalarProperty Name="fid" ColumnName="fid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subscriptions">
+            <EntityTypeMapping TypeName="SDModel.subscription">
+              <MappingFragment StoreEntitySet="subscriptions">
+                <ScalarProperty Name="postby" ColumnName="postby" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="validity_months" ColumnName="validity_months" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="subID" ColumnName="subID" />
+                <ScalarProperty Name="sl" ColumnName="sl" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
